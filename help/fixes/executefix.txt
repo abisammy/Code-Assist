@@ -1,0 +1,52 @@
+This error is a very common one and you shouldn't worry if you get it
+
+To help explain the problem, I will be using a command handler made by Code Lyon, watch it [here](https://www.youtube.com/watch?v=AUOb9_aAk7U)
+
+In the video, Code Lyon creates a simple ping pong command, like this: 
+```js
+    // ping.js
+    module.exports = {
+    name: "ping",
+    description: "this is a ping command!",
+    execute(message, args) {
+        message.channel.send("pong!");
+    },
+};
+```
+
+And in the main file he adds 
+```js    
+// main.js
+if (command === "ping") {
+    client.commands.get("ping").execute(message, args);
+}
+```
+
+There could be multiple areas in which you could get this error, here are a few to name
+
+**Firstly** you could not be mapping your commands right, this means that its not finding the correct command files, in the tutorial Code Lyon uses this to map his commands:
+```js
+const fs = require("fs");
+
+client.commands = new Discord.Collection();
+
+const commandFiles = fs
+    .readdirSync("./commands/")
+    .filter((file) => file.endsWith(".js"));
+for (const file of commandFiles) {
+    const command = require(`./commands/${file}`);
+
+    client.commands.set(command.name, command);
+}
+```
+**Make sure that its working correctly**, on the next line add:
+```js
+console.log(client.commands)
+```
+
+If that seems normal, the **second** possibility could be that your command file, is not set up properly. 
+**1.** Make sure your js file ends with js and is called the exact same thing , for example my file is called ping.js, and the name inside is "ping", if it is not exact it will break the code
+**2.** make sure there are no typos, it could be you spelled is as ``exeute`` or something simular
+
+If you are stil having problems at this point ask someone to help you
+*Written by abisammy#4749*

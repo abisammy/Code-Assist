@@ -1,0 +1,34 @@
+Use whatever command handler you want, I will just give an example of the code you need to put in your execute, (it could be called run, or callback or something similar).
+```js
+const { MessageEmbed } = require("discord.js")
+        //either the person you mention or the person who 
+        //runs the command. 
+         const user = message.mentions.users.first() || 
+         message.author;
+
+    //this sends the message in to the channel.  
+    const { channel } = message
+    // here we create the embed to put the users avatar in.
+     const avatarEmbed = new MessageEmbed()
+        // we set a color for the embed(could be either 
+        // RANDOM, a specific color in caps: (RED) or a 
+        // hex color code like: #F30B04). 
+    .setColor("RANDOM")
+     // then we put the users discord tag in the footer. 
+    .setFooter(`${user.tag}'s avatar!`)
+     // the last step is to send the actual avatar of the user 
+    .setImage(user.displayAvatarURL({size: 4096, dynamic: true}))
+     // if the image is too small you can always change the 
+     //size to your linking.
+    
+    channel.send(avatarEmbed)
+         
+```
+
+**Things you can add**
+- you could add a link to the users avatar in the top of the embed so people can download it easily.
+
+
+If you have any common errors, try to trouble shoot them with the bot before asking someone for help
+*Written by Faint#6669*
+  

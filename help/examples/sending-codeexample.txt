@@ -1,0 +1,41 @@
+Sending code will be much easier following this tutorial
+
+Lets say you needed some help with your code, and you decided to ask in a server. This is some code for a simple embed: 
+```js
+const embed = new Discord.MessageEmbed()
+.setTitle("This is an embed"), 
+.setDescription("Isnt it cool?");
+message.channel.send(embed)```
+
+
+**If you send code in a server, please dont send it like this**
+const embed = new Discord.MessageEmbed()
+.setTitle("This is an embed"), 
+.setDescription("Isnt it cool?")
+nmessage.channel.send(embed)
+
+
+There are multiple ways to improve sending it
+Here are two examples
+
+
+**Option one** add three backticks(`` ` ``) and a js, before and after your code
+This is how it will look like
+\`\`\`js
+YOUR CODE
+\`\`\`
+
+The result will look a little like
+```js
+const embed = new Discord.MessageEmbed()
+.setTitle("This is an embed"), 
+.setDescription("Isnt it cool?");
+message.channel.send(embed)```
+
+**Option two** use [sourcebin](https://sourceb.in/) to send your code!
+Sourcebin is made for users to easily send code, and might just help you! Check it out [here](https://sourceb.in/)
+
+
+**Why is this useful?**
+Some servers might enforce a rule that you need to use backtics before sending code, while in all cases it makes it easier for the person trying to help you to understand your code.
+*Written by abisammy#4749*

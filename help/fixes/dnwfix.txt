@@ -1,0 +1,7 @@
+Please try provide more context with your message, such as
+
+```
+Hello, I am getting an error with my code. I want it to kick the member, but when I try do kick @member, it gives me this error: **Put your error here**
+Here is my code: **Put your code here**
+```
+*Written by abisammy#4749*

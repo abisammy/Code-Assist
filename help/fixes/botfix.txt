@@ -1,0 +1,38 @@
+There are a few possibilities to fix this.
+
+One possible explanation could be you have named it client instead of bot. A way to check what you called it would be to check these lines of code:
+```js
+const Discord = require("discord.js)
+/* If this is client, then that means you need to replace where you put bot with client*/
+
+const client = new Discord.Client()
+```
+
+Another possible explanation is that you have not passed in your client
+Here is an example
+```js
+// In the main file
+const changeStatus = require("./change-status.js")
+
+changeStatus(client, newStatus)
+//           ^^^^^^
+//           You pass in client here
+
+// In change-status.js
+module.exports = (newStatus) => {
+//                ^^^^^^^^^  
+//                But don't recieve it here
+        client.user.setPresence({
+        status: "online",
+        activity: {
+            name: newStatus,
+            type: "WATCHING",
+        },
+    });
+}
+```
+
+That code was for code to change the status of the bot, but you could have missed the client in any other file that requires it
+
+If you are stil having problems at this point ask someone to help you
+*Written by abisammy#4749*

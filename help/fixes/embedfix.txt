@@ -1,0 +1,24 @@
+Lets say you are trying to send an embed
+One possibility is that you have names the embed differently here is an example
+
+```js
+const { MessageEmbed } = require("discord.js")
+const { channel } = message
+
+const newEmbed = new MessageEmbed()
+//    ^^^^^^^^
+//    Here you call it newEmbed
+.setAuthor("this is an embed")
+.setDescription("Isnt it cool")
+.setColor("#FF0000")
+.addField("But it isnt gonna work", "😢😢😢");
+
+channel.send(embed)
+//           ^^^^^
+//           But here you call embed
+```
+
+That code was for code to change the status of the bot, but you could have missed the client in any other file that requires it
+
+If you are stil having problems at this point ask someone to help you
+*Written by abisammy#4749*

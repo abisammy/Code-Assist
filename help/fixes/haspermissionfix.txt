@@ -1,0 +1,33 @@
+Lets say your trying to check if a member has a kick message permission, for this explanation, I will be using this [video]() by Code Lyon.
+
+In main.js we have this code: 
+```js
+if (command === "kick"){
+    client.commands.get(kick).execute(message, args)
+}
+```
+And in kick.js we can have this code:
+```js
+name: "kick",
+desription: "kicks a member",
+execute(args, message){
+    if (!message.member.hasPermission("KICK_MEMBERS")){
+        return message.channel.send("You do not have permission to kic kthat user")
+    }
+}
+```
+
+Now all that code works fine apart from a little problem, in main.js we do 
+```js
+.execute(message, args)
+```
+However in kick.js we do:
+```
+exxecute (args, message)
+```
+Becasue of how javascript functions work, this means that we are seeing as args as message, and message as args in kick.js. This means we are tryign to get a porperty which doesnt exist in args, which is message in kick.js, so it gives an error.
+
+To fix this swap around the parameters (the message and the args, and whatever more you may have such as client) in kick.js to match with your command handler which deals with messages, or your main.js
+
+If you are stil having problems at this point ask someone to help you
+*Written by abisammy#4749*

@@ -1,0 +1,12 @@
+This one is pretty simple
+
+You probably have an axtra ``)`` or ``}``, or a missing ``)`` or ``}`` somewhere
+
+An example of this could be:
+```js
+message.channel.send("hello"
+```
+You are missing a ) at the end and the code throws an error
+
+If you are stil having problems at this point ask someone to help you
+*Written by abisammy#4749*

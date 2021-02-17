@@ -1,0 +1,52 @@
+This error can be caused just by a little typo, here is how you could asses it
+
+Lets say you wanted to send a message to a specific channel, you would do
+```js
+const channel = client.channel.cache.get("CHANNEL_ID")
+//                       ^^^^^^^
+//                       client.channels not client.channel
+channel.send("hi")
+```
+The reas its client.channels not client.channel can be read in these [docs](https://discord.js.org/#/docs/main/stable/class/Client?scrollTo=channels)
+
+Another solution to this problem, could be something o do with your command and command handler, here I will use [this video](https://www.youtube.com/watch?v=AUOb9_aAk7U) to explain
+
+In the video, code lyon does in his main.js: 
+```js
+if (command === "ping"){
+    client.commands.get("ping").execute(message, args, client, Discord)
+}
+```
+And in his ping.js
+
+```js
+name: "ping",
+desription: "Pong!",
+async execute(message, args, Discord, client){
+    client.channels.cache.get("CHANNEL_ID").send("Pong!")
+}
+```
+Can you see the problem? lt me highlight it for you
+
+```js
+// main.js
+if (command === "ping"){
+    client.commands.get("ping").execute(message, args, client, Discord)
+}                                   
+//                                      ^^^^^^^^^^^^^^
+//                                      You pass in message, args, client, Discord here
+
+// ping.js
+name: "ping",
+desription: "Pong!",
+async execute(message, args, Discord, client){
+//            ^^^^^^^^^^^^^  
+//            But here you reacive message, args, Discord, client  
+    client.channels.cache.get("CHANNEL_ID").send("Pong!")
+}
+```
+
+What all this means, is that you are trying to find the channels property from Discord, not client so it gives an error
+
+If you are stil having problems at this point ask someone to help you
+*Written by abisammy#4749*
