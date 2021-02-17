@@ -1,9 +1,4 @@
 module.exports = async (client) => {
-    // Find the file mongo.js and connect to mongo
-    const mongo = require("@util/mongo");
-
-    await mongo();
-
     // Use path to find the commands folder, and then the folders in that folder and the command files themselves
     const path = require("path");
 

@@ -1,6 +1,10 @@
+// Get commando to create a new command
 const Commando = require("discord.js-commando");
+
+// Get embeds, and util so we can split the embed from discord.js
 const { MessageEmbed, Util } = require("discord.js");
 
+// Create the commando commadn
 module.exports = class ErrorsCommand extends Commando.Command {
     constructor(client) {
         super(client, {
@@ -14,50 +18,76 @@ module.exports = class ErrorsCommand extends Commando.Command {
         });
     }
     run = async (message, args) => {
+        // Destructure the guild and channel from the message
         const { guild, channel } = message;
+
+        // Get the command prefix if the message was ran in a server or DM's
         let commandPrefix = channel.type !== "dm" ? guild.commandPrefix : "";
+
+        // Get the first argument
         const firstArg = args[0];
+
+        // If they didnt provide a first argument, send them all the examples
         if (!firstArg) {
-            const errorsEmbed = new MessageEmbed()
+            // Create an embed
+            const examplesEmbed = new MessageEmbed()
                 .setAuthor(`Examples of code for your bot!`)
                 .setColor("#7289DA");
 
-            let errorEmbedText = `**To find out the code for a specific example, copy the ID and do \`\`${commandPrefix}examples example-id\`\`\n\n**`;
+            // Ad this text to the description
+            let exampleEmbedText = `**To find out the code for a specific example, copy the ID and do \`\`${commandPrefix}examples example-id\`\`\n\n**`;
 
+            // For every example in the client.examples map, whic hwe set in loadExamples.js
             for (const example of this.client.examples) {
+                // Get the ID for each example
                 let exampleId = example[0];
 
-                errorEmbedText += `\n**${example[0].replace(
+                // Add this to the embed text, which we will add to the description
+                exampleEmbedText += `\n**${example[0].replace(
                     /-/g,
                     " "
                 )}**\nID: \`\`${exampleId}\`\`\n`;
             }
 
-            errorsEmbed.setDescription(errorEmbedText);
-            channel.send(errorsEmbed);
+            // Set the description to the text
+            await examplesEmbed.setDescription(exampleEmbedText);
+
+            // Send the embed
+            channel.send(examplesEmbed);
         } else {
+            // Create an empty string to store all the ID's
             let idString = [];
 
+            // For every example ID in the map
             for (const example of this.client.examples) {
                 let exampleid = example[0];
-
+                // Add it to the string
                 idString.push(exampleid);
             }
-            if (idString.includes(firstArg)) {
-                const { author } = message;
-                var findIndex = idString.indexOf(firstArg);
 
-                const getExample = require("./../../help/getExample").value;
+            // If the ID string has our first argument
+            if (idString.includes(firstArg)) {
+                // Desrcuture the author
+                const { author } = message;
+
+                // Get the getExample module.exports from getExample.js
+                const getExample = require("@help/getExample").value;
+
+                // Find the example and pass in the first argument
                 let example = getExample(firstArg);
+
+                // Split the text if it is over 2048 characters
                 const [first, ...rest] = Util.splitMessage(example, {
                     maxLength: 2048,
                 });
-                // return data.replace(/(\r\n|\n|\r)/gm, "\n");
+
+                // Create the embed
                 const exampleEmbed = new MessageEmbed()
                     .setAuthor(`${firstArg.replace(/-/g, " ")} example`)
                     .setColor("#7289DA")
                     .setDescription(first);
 
+                // If the message asnt sent in a DM tell the user to check their DM's
                 if (channel.type !== "dm") {
                     message.reply("Check your DMs!");
                 }
@@ -70,6 +100,7 @@ module.exports = class ErrorsCommand extends Commando.Command {
                     });
                 }
 
+                //
                 if (first.includes("{ SPLIT }")) {
                     let addSplit = first.replace("{ SPLIT }", "```");
                     var textAfterSplit = first.split("{ SPLIT }").pop();

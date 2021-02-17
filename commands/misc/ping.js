@@ -1,6 +1,6 @@
+// Not going to take credit, this is the default discord.js commando ping command modified into an embed
+
 const Commando = require("discord.js-commando");
-const { oneLine } = require("common-tags");
-const Command = require("discord.js-commando/src/commands/base");
 const { MessageEmbed } = require("discord.js");
 module.exports = class TestCommand extends Commando.Command {
     constructor(client) {

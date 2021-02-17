@@ -1,6 +1,7 @@
+// Not going to take credit this is the discord.js commando help command modified into an embed
+
 const { stripIndents, oneLine } = require("common-tags");
 const Command = require("discord.js-commando/src/commands/base");
-const { disambiguation } = require("discord.js-commando/src/util");
 const { MessageEmbed } = require("discord.js");
 module.exports = class HelpCommand extends Command {
     constructor(client) {
@@ -69,7 +70,10 @@ module.exports = class HelpCommand extends Command {
                     .setAuthor("Help")
                     .setDescription(help)
                     .setColor("#7289DA")
-                    .addField(`Links`, `[github]()`);
+                    .addField(
+                        `Links`,
+                        `[github](https://github.com/abisammy/DJS-assist)`
+                    );
                 msg.channel.send(explainEmbed);
             }
         } else {
@@ -213,7 +217,10 @@ module.exports = class HelpCommand extends Command {
                                 .join("\n\n")}
             		`,
                 { split: true };
-            helpEmbed.addField(`Links`, `[github]()`);
+            helpEmbed.addField(
+                `Links`,
+                `[github](https://github.com/abisammy/DJS-assist)`
+            );
             msg.channel.send(helpEmbed);
         }
     }

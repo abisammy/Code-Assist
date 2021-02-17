@@ -1,22 +1,32 @@
-const Discord = require("discord.js");
+// Require the collection to create a map for the different examples
+const { Collection } = require("discord.js");
+
+// Require fs to find the files
 const fs = require("fs");
 
+// Get the client so we can set the examples as a map
 module.exports = (client) => {
-    client.errors = new Discord.Collection();
-    client.once("ready", () => {
-        ["errors", "phrases"].forEach((handler) => {
-            const command_files = fs
+    // Create the empty map
+    client.errors = new Collection();
 
+    // Once the bot is online
+    client.once("ready", () => {
+        // For each of the errors or phrases in the help/phrases or help/examples
+        ["errors", "phrases"].forEach((handler) => {
+            // Find the fix.txt files in these folders
+            const error_files = fs
                 .readdirSync(`help/${handler}`)
                 .filter((file) => file.endsWith(".js"));
 
-            for (const file of command_files) {
-                const command = require(`./../../help/${handler}/${file.slice(
-                    0,
-                    -3
-                )}`);
-                if (command.name) {
-                    let formatedCommand = {
+            // For each file that it has found
+            for (const file of error_files) {
+                // Find the file and cut off the fix
+                const error = require(`@help/${handler}/${file.slice(0, -3)}`);
+
+                // If there is a name provided in the file
+                if (error.name) {
+                    // Create a default error
+                    let formatedError = {
                         name: "",
                         errors: [],
                         description: "",
@@ -24,32 +34,43 @@ module.exports = (client) => {
                         embedOrNot: false,
                         execute: null,
                     };
-                    formatedCommand.name = command.name;
 
-                    for (const error of command.errors) {
+                    // Set the name to the error name
+                    formatedError.name = error.name;
+
+                    // For the error, of the trigers
+                    for (const error of error.errors) {
                         let errorToLowerCase = error
                             .toLowerCase()
                             .replace(/ /g, "");
 
-                        formatedCommand.errors.push(errorToLowerCase);
+                        // Push the value to a string, so now all triggers will be a string
+                        formatedError.errors.push(errorToLowerCase);
                     }
 
-                    command.description
-                        ? (formatedCommand.description = command.description)
-                        : (formatedCommand.description = null);
-                    command.errorDisplayName
-                        ? (formatedCommand.errorDisplayName =
-                              command.errorDisplayName)
-                        : (formatedCommand.errorDisplayName = null);
-                    command.embedOrNot
-                        ? (formatedCommand.embedOrNot = command.embedOrNot)
-                        : (formatedCommand.embedOrNot = false);
-                    command.execute
-                        ? (formatedCommand.execute = command.execute)
-                        : (formatedCommand.execute = null);
+                    // Set the description to the description if it has one
+                    error.description
+                        ? (formatedError.description = error.description)
+                        : (formatedError.description = null);
 
-                    client.errors.set(formatedCommand.name, formatedCommand);
+                    // Set the display name to the display name if it has one
+                    error.errorDisplayName
+                        ? (formatedError.errorDisplayName =
+                              error.errorDisplayName)
+                        : (formatedError.errorDisplayName = null);
+
+                    // If embedOrNot is true set the default one to true
+                    error.embedOrNot
+                        ? (formatedError.embedOrNot = error.embedOrNot)
+                        : (formatedError.embedOrNot = false);
+                    error.execute
+                        ? (formatedError.execute = error.execute)
+                        : (formatedError.execute = null);
+
+                    // Finally set the map, to the formated error
+                    client.errors.set(formatedError.name, formatedError);
                 } else {
+                    // If there wasnt an error name, continue searching for files
                     continue;
                 }
             }

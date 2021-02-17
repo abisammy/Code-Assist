@@ -1,5 +1,8 @@
+// Import the client
 module.exports = (client) => {
-    client.on("ready", () => {
+    // When the client is ready
+    client.once("ready", () => {
+        // Change the status of the bot to watching js!help for help
         client.user.setPresence({
             status: "online",
             activity: {
@@ -7,6 +10,8 @@ module.exports = (client) => {
                 type: "WATCHING",
             },
         });
-        console.log("Features work OH YEAH");
+
+        // Log that the bot is online
+        console.log("Bot is online");
     });
 };

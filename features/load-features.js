@@ -1,3 +1,7 @@
+/* I am not going to note this one as this was made by a tutorial made by Worn Off Keys
+Check it out here:
+https://www.youtube.com/watch?v=WWeDV2_njiw
+*/
 const path = require("path");
 const fs = require("fs");
 
