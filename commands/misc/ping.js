@@ -2,7 +2,7 @@
 
 const Commando = require("discord.js-commando");
 const { MessageEmbed } = require("discord.js");
-module.exports = class TestCommand extends Commando.Command {
+module.exports = class PingCommand extends Commando.Command {
     constructor(client) {
         super(client, {
             name: "ping",

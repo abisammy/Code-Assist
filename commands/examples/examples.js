@@ -4,8 +4,8 @@ const Commando = require("discord.js-commando");
 // Get embeds, and util so we can split the embed from discord.js
 const { MessageEmbed, Util } = require("discord.js");
 
-// Create the commando commadn
-module.exports = class ErrorsCommand extends Commando.Command {
+// Create the commando command
+module.exports = class ExamplesCommand extends Commando.Command {
     constructor(client) {
         super(client, {
             name: "examples",
@@ -34,10 +34,10 @@ module.exports = class ErrorsCommand extends Commando.Command {
                 .setAuthor(`Examples of code for your bot!`)
                 .setColor("#7289DA");
 
-            // Ad this text to the description
+            // Add this text to the description
             let exampleEmbedText = `**To find out the code for a specific example, copy the ID and do \`\`${commandPrefix}examples example-id\`\`\n\n**`;
 
-            // For every example in the client.examples map, whic hwe set in loadExamples.js
+            // For every example in the client.examples map, which we set in loadExamples.js
             for (const example of this.client.examples) {
                 // Get the ID for each example
                 let exampleId = example[0];
@@ -100,35 +100,65 @@ module.exports = class ErrorsCommand extends Commando.Command {
                     });
                 }
 
-                //
+                /* This code is made for examples. If the example goes over 2048 characters (discords embed limmit) The code splits it automatically,
+                However if we are in the middle of a code block, the code doesnt finish it iwth a ending code block, so it looks unformated
+                This code basically splits any code block if you write { SPLIT } in a example, and it will start the rest of the code on a new embed
+                */
+
+                // If it has split
                 if (first.includes("{ SPLIT }")) {
+                    // Replace split with closing code blocks
                     let addSplit = first.replace("{ SPLIT }", "```");
+
+                    // Get all the text after the split
                     var textAfterSplit = first.split("{ SPLIT }").pop();
 
+                    // Remove the rest of the text from the first embed
                     let removeChars = addSplit.slice(0, -textAfterSplit.length);
+
+                    // Set the embeds description to the first text
                     exampleEmbed.setDescription(removeChars);
+
+                    // Send the embed
                     await author.send(exampleEmbed).catch((error) => {
                         return;
                     });
+
+                    // Remove the author for the second embed
                     exampleEmbed.setAuthor(" ");
+
+                    // Set the seconds embed description to the rest of the text from the first one, and the rest of the code
                     exampleEmbed.setDescription(
                         `\`\`\`js\n${textAfterSplit}\n${rest}`
                     );
+
+                    // Send the second embed
                     return author.send(exampleEmbed).catch((error) => {
                         return;
                     });
+
+                    // However if there was no split, so we dont have to split it at a code block
                 } else {
+                    // Send the first embed
                     await author.send(exampleEmbed).catch((error) => {
                         return;
                     });
+
+                    // Remove the author for the second embed
                     exampleEmbed.setAuthor(" ");
+
+                    // Set the description of the second embed to the rest of the text
                     exampleEmbed.setDescription(rest);
 
+                    // Send the second embed
                     return author.send(exampleEmbed).catch((error) => {
                         return;
                     });
                 }
+
+                // However if they did not provide a valid example ID
             } else {
+                // Create an embed and tell the user that there is no ID for that example
                 const errorEmbed = new MessageEmbed()
                     .setAuthor(
                         `You provided me with an invalid example code ❌`

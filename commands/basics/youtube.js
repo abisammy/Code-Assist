@@ -1,6 +1,8 @@
+// Get commando and destructure MessageEmbed from discord.js
 const Commando = require("discord.js-commando");
 const { MessageEmbed } = require("discord.js");
 
+// Create the youtube command
 module.exports = class YoutubeCommand extends Commando.Command {
     constructor(client) {
         super(client, {
@@ -13,8 +15,10 @@ module.exports = class YoutubeCommand extends Commando.Command {
         });
     }
     run = async (message) => {
+        // Destructure the channel from the message
         const { channel } = message;
 
+        // Create the embed and send it
         const youtubeEmbed = new MessageEmbed()
             .setAuthor(
                 `Here are a few youtube series, that I think you should check out to learn discord.js`

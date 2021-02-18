@@ -39,8 +39,8 @@ module.exports = (client) => {
                     formatedError.name = error.name;
 
                     // For the error, of the trigers
-                    for (const error of error.errors) {
-                        let errorToLowerCase = error
+                    for (const errorTrigger of error.errors) {
+                        let errorToLowerCase = errorTrigger
                             .toLowerCase()
                             .replace(/ /g, "");
 
