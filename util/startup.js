@@ -5,8 +5,8 @@ module.exports = (client) => {
     const MongoDBProvider = require("commando-provider-mongo").MongoDBProvider;
 
     // Get the mongopath and the client
-    const MONGOPATH = process.env.MONGOPATH3;
-    const TOKEN = process.env.TOKEN6;
+    const MONGOPATH = process.env.MONGOPATH;
+    const TOKEN = process.env.TOKEN;
 
     // Find the load-commands.js file
     const loadCommands = require("@util/load-commands");
