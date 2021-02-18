@@ -18,6 +18,16 @@ module.exports = class YoutubeCommand extends Commando.Command {
         // Destructure the channel from the message
         const { channel } = message;
 
+        if (
+            channel.type !== "dm" &&
+            !channel.permissionsFor(guild.me).has("EMBED_LINKS")
+        ) {
+            channel.send(
+                `I need the embed links permission in this channel to execute this command!`
+            );
+            return;
+        }
+
         // Create the embed and send it
         const youtubeEmbed = new MessageEmbed()
             .setAuthor(

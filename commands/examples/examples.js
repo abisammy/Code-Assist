@@ -18,155 +18,103 @@ module.exports = class ExamplesCommand extends Commando.Command {
         });
     }
     run = async (message, args) => {
-        // Destructure the guild and channel from the message
-        const { guild, channel } = message;
+        const findExample = require("@util/findExample");
+        const { channel, guild } = message;
+        if (
+            channel.type !== "dm" &&
+            !channel.permissionsFor(guild.me).has("EMBED_LINKS")
+        ) {
+            channel.send(
+                `I need the embed links permission in this channel to execute this command!`
+            );
+            return;
+        }
+        if (
+            channel.type !== "dm" &&
+            !channel.permissionsFor(guild.me).has("VIEW_CHANNEL")
+        ) {
+            return;
+        }
+        if (
+            channel.type !== "dm" &&
+            !channel.permissionsFor(guild.me).has("SEND_MESSAGES")
+        ) {
+            const misingPermissiosEmbed = new MessageEmbed()
+                .setAuthor(
+                    `I am missing the send messages permission in this channel ❌`
+                )
+                .setColor("#FF0000")
+                .setDescription(
+                    `Please ask a server administrator to grant me it in this channel!`
+                );
 
-        // Get the command prefix if the message was ran in a server or DM's
-        let commandPrefix = channel.type !== "dm" ? guild.commandPrefix : "";
-
-        // Get the first argument
+            channel.send(misingPermissiosEmbed);
+            return;
+        }
+        let exampleLanguages = this.client.languages.get("examples-languages");
         const firstArg = args[0];
 
-        // If they didnt provide a first argument, send them all the examples
+        let commandPrefix = channel.type !== "dm" ? guild.commandPrefix : "";
+
         if (!firstArg) {
-            // Create an embed
-            const examplesEmbed = new MessageEmbed()
-                .setAuthor(`Examples of code for your bot!`)
+            const exampleLanguagesEmbed = new MessageEmbed()
+                .setAuthor("Languages that I support")
                 .setColor("#7289DA");
 
-            // Add this text to the description
-            let exampleEmbedText = `**To find out the code for a specific example, copy the ID and do \`\`${commandPrefix}examples example-id\`\`\n\n**`;
-
-            // For every example in the client.examples map, which we set in loadExamples.js
-            for (const example of this.client.examples) {
-                // Get the ID for each example
-                let exampleId = example[0];
-
-                // Add this to the embed text, which we will add to the description
-                exampleEmbedText += `\n**${example[0].replace(
-                    /-/g,
-                    " "
-                )}**\nID: \`\`${exampleId}\`\`\n`;
+            let embedText = `Do \`\`${commandPrefix}examples language\`\` to see errors for a specific language! \n\n`;
+            for (const exampleLanguage of exampleLanguages) {
+                embedText += `**${exampleLanguage}**\n\n`;
             }
+            exampleLanguagesEmbed.setDescription(embedText);
+            return channel.send(exampleLanguagesEmbed);
+        }
 
-            // Set the description to the text
-            await examplesEmbed.setDescription(exampleEmbedText);
-
-            // Send the embed
-            channel.send(examplesEmbed);
-        } else {
-            // Create an empty string to store all the ID's
-            let idString = [];
-
-            // For every example ID in the map
-            for (const example of this.client.examples) {
-                let exampleid = example[0];
-                // Add it to the string
-                idString.push(exampleid);
-            }
-
-            // If the ID string has our first argument
-            if (idString.includes(firstArg)) {
-                // Desrcuture the author
-                const { author } = message;
-
-                // Get the getExample module.exports from getExample.js
-                const getExample = require("@help/getExample").value;
-
-                // Find the example and pass in the first argument
-                let example = getExample(firstArg);
-
-                // Split the text if it is over 2048 characters
-                const [first, ...rest] = Util.splitMessage(example, {
-                    maxLength: 2048,
-                });
-
-                // Create the embed
-                const exampleEmbed = new MessageEmbed()
-                    .setAuthor(`${firstArg.replace(/-/g, " ")} example`)
-                    .setColor("#7289DA")
-                    .setDescription(first);
-
-                // If the message asnt sent in a DM tell the user to check their DM's
-                if (channel.type !== "dm") {
-                    message.reply("Check your DMs!");
-                }
-
-                // Max characters were not reached so there is no "rest" in the array
-                if (!rest.length) {
-                    // Send just the embed with the first element from the array
-                    return author.send(exampleEmbed).catch((error) => {
-                        return;
-                    });
-                }
-
-                /* This code is made for examples. If the example goes over 2048 characters (discords embed limmit) The code splits it automatically,
-                However if we are in the middle of a code block, the code doesnt finish it iwth a ending code block, so it looks unformated
-                This code basically splits any code block if you write { SPLIT } in a example, and it will start the rest of the code on a new embed
-                */
-
-                // If it has split
-                if (first.includes("{ SPLIT }")) {
-                    // Replace split with closing code blocks
-                    let addSplit = first.replace("{ SPLIT }", "```");
-
-                    // Get all the text after the split
-                    var textAfterSplit = first.split("{ SPLIT }").pop();
-
-                    // Remove the rest of the text from the first embed
-                    let removeChars = addSplit.slice(0, -textAfterSplit.length);
-
-                    // Set the embeds description to the first text
-                    exampleEmbed.setDescription(removeChars);
-
-                    // Send the embed
-                    await author.send(exampleEmbed).catch((error) => {
-                        return;
-                    });
-
-                    // Remove the author for the second embed
-                    exampleEmbed.setAuthor(" ");
-
-                    // Set the seconds embed description to the rest of the text from the first one, and the rest of the code
-                    exampleEmbed.setDescription(
-                        `\`\`\`js\n${textAfterSplit}\n${rest}`
-                    );
-
-                    // Send the second embed
-                    return author.send(exampleEmbed).catch((error) => {
-                        return;
-                    });
-
-                    // However if there was no split, so we dont have to split it at a code block
-                } else {
-                    // Send the first embed
-                    await author.send(exampleEmbed).catch((error) => {
-                        return;
-                    });
-
-                    // Remove the author for the second embed
-                    exampleEmbed.setAuthor(" ");
-
-                    // Set the description of the second embed to the rest of the text
-                    exampleEmbed.setDescription(rest);
-
-                    // Send the second embed
-                    return author.send(exampleEmbed).catch((error) => {
-                        return;
-                    });
-                }
-
-                // However if they did not provide a valid example ID
-            } else {
-                // Create an embed and tell the user that there is no ID for that example
+        if (exampleLanguages.includes(firstArg)) {
+            let findExampleForFirstArg = this.client.exampleNames.get(firstArg);
+            if (!findExampleForFirstArg[0]) {
                 const errorEmbed = new MessageEmbed()
                     .setAuthor(
-                        `You provided me with an invalid example code ❌`
+                        `No examples found for that programming language`
                     )
-                    .setColor("#FF0000");
+                    .setColor("#7289DA")
+                    .setDescription(`Hopfully we can add some soon!`);
 
                 return channel.send(errorEmbed);
             }
+            const embed = new MessageEmbed()
+                .setAuthor(`Errors for ${firstArg}`)
+                .setColor("#7289DA");
+
+            let embedText = `To get the code for a specific example, do \`\`${commandPrefix}examples example-id\`\`\n\n`;
+            for (const example of findExampleForFirstArg) {
+                let exampleFound = this.client.examples.get(example);
+                if (exampleFound.hidden !== true) {
+                    embedText += `**${exampleFound.exampleDisplayName}**\nID: \`\`${exampleFound.exampleId}\`\`\n`;
+                } else {
+                    continue;
+                }
+            }
+
+            embed.setDescription(embedText);
+            return channel.send(embed);
+        } else if (this.client.exampleIds.get(firstArg.toLowerCase())) {
+            let exampleCode = this.client.exampleIds.get(
+                firstArg.toLowerCase()
+            );
+            let example = this.client.examples.get(exampleCode);
+            if (example.hidden === true) {
+                return;
+            }
+            findExample(this.client, example.name, message);
+        } else {
+            const errorEmbed = new MessageEmbed()
+                .setAuthor(`I do not support that language or error ❌`)
+                .setColor("#FF0000")
+                .setDescription(
+                    `Please try ${commandPrefix}errors to see my supported languages!`
+                );
+
+            return channel.send(errorEmbed);
         }
     };
 };

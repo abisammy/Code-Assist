@@ -1,0 +1,9 @@
+This one is simple, you provided a comma to extra, a bracket to less
+
+One extention I recomend you install to help reduce this error if you are using [visual studio code](https://code.visualstudio.com/)(check it out its free)
+Is [Bracket Pair Colorizer 2](https://marketplace.visualstudio.com/items?itemName=CoenraadS.bracket-pair-colorizer-2)
+
+This allows you to visualise opening and closing brackets, to make sure you don't have one too many or one too little
+
+If you are stil having problems at this point ask someone to help you
+*Written by abisammy#4749*

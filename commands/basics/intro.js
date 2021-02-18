@@ -19,6 +19,16 @@ module.exports = class IntroCommand extends Commando.Command {
         // Create the command prefix whether the command was ran in a DM or in a servr
         let commandPrefix = channel.type !== "dm" ? guild.commandPrefix : "";
 
+        if (
+            channel.type !== "dm" &&
+            !channel.permissionsFor(guild.me).has("EMBED_LINKS")
+        ) {
+            channel.send(
+                `I need the embed links permission in this channel to execute this command!`
+            );
+            return;
+        }
+
         // Create the embed and send it
         const introEmbed = new MessageEmbed()
             .setAuthor(`Hello!`)

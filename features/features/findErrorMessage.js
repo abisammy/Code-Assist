@@ -1,60 +1,70 @@
-const { MessageEmbed, Util } = require("discord.js");
-
+const blacklistedUsers = require("@util/jsons/blacklistedUsers.json");
+const blacklistedGuilds = require("@util/jsons/blacklistedGuilds.json");
+const findError = require("@util/findError");
+let triggers = new Map();
+let triggersArray = [];
+function logMapElements(value, key) {
+    for (const trigger in key) {
+        triggers.set(key[trigger], value);
+        triggersArray.push(key[trigger]);
+    }
+}
+function loadTriggers(client) {
+    if (triggers.size === 0) {
+        client.errorTriggers.forEach(logMapElements);
+    } else {
+        return;
+    }
+}
 module.exports = (client) => {
-    client.on("message", async (message) => {
-        const { guild, channel, author } = message;
-        let { content: messageContent } = message;
+    client.on("message", (message) => {
+        const { channel, guild, content: messageContent, author } = message;
+
+        if (
+            channel.type !== "dm" &&
+            !channel.permissionsFor(guild.me).has("VIEW_CHANNEL")
+        ) {
+            return;
+        }
+        if (
+            channel.type !== "dm" &&
+            !channel.permissionsFor(guild.me).has("SEND_MESSAGES")
+        ) {
+            return;
+        }
+
+        if (blacklistedUsers.hasOwnProperty(author.id)) {
+            return;
+        }
+        if (
+            channel.type !== "dm" &&
+            blacklistedGuilds.hasOwnProperty(guild.id)
+        ) {
+            return;
+        }
         if (channel.type !== "dm") {
             let prefix = guild.commandPrefix;
 
             if (messageContent.startsWith(prefix)) return;
         }
 
-        let args = messageContent.split(/ +/);
-        let contentJoinedToLowerCase = args.join("").toLowerCase();
+        if (author.bot) {
+            return;
+        }
 
-        for (const key of client.errors) {
-            let errors = key[1].errors;
+        loadTriggers(client);
 
-            for (const error of errors) {
-                if (contentJoinedToLowerCase.includes(error)) {
-                    if (key[1].embedOrNot === true) {
-                        const getExample = require("./../../help/getFix").value;
-                        let example = getExample(key[0]);
+        let messageContentToLowerCase = messageContent
+            .toLowerCase()
+            .replace(/ /g, "");
 
-                        const [first, ...rest] = Util.splitMessage(example, {
-                            maxLength: 2048,
-                        });
-
-                        const exampleEmbed = new MessageEmbed()
-                            .setAuthor(key[1].description)
-                            .setColor("#7289DA")
-                            .setDescription(first);
-
-                        if (channel.type !== "dm") {
-                            message.reply("Check your DMs!");
-                        }
-
-                        if (!rest.length) {
-                            return author.send(exampleEmbed).catch((error) => {
-                                return;
-                            });
-                        }
-
-                        await author.send(exampleEmbed).catch((error) => {
-                            return;
-                        });
-
-                        exampleEmbed.setAuthor(" ");
-                        exampleEmbed.setDescription(rest);
-
-                        return author.send(exampleEmbed).catch((error) => {
-                            return;
-                        });
-                    } else {
-                        return key[1].execute(channel, MessageEmbed, message);
-                    }
-                }
+        for (const trigger of triggersArray) {
+            if (messageContentToLowerCase.includes(trigger)) {
+                let errorCode = triggers.get(trigger);
+                findError(client, errorCode, message);
+                break;
+            } else {
+                continue;
             }
         }
     });
