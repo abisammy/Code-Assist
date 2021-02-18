@@ -4,7 +4,7 @@ module.exports = (client) => {
     client.exampleNames = new Collection();
     client.examples = new Collection();
     client.exampleIds = new Collection();
-    let exampleLanguages = client.languages.get("error-languages");
+    let exampleLanguages = client.languages.get("examples-languages");
     for (const language of exampleLanguages) {
         const getExamples = (source) =>
             readdirSync(source, { withFileTypes: true })

@@ -48,7 +48,7 @@ module.exports = class ErrorsCommand extends Commando.Command {
             return;
         }
 
-        let errorLanguages = this.client.languages.get("error-languages");
+        let errorLanguages = this.client.languages.get("errors-languages");
         const firstArg = args[0];
 
         let commandPrefix = channel.type !== "dm" ? guild.commandPrefix : "";
@@ -72,7 +72,7 @@ module.exports = class ErrorsCommand extends Commando.Command {
                 .setAuthor(`Errors for ${firstArg}`)
                 .setColor("#7289DA");
 
-            let embedText = `To get the code for a specific error, do \`\`${commandPrefix}errors ${firstArg.toLowerCase()} error-id\`\`\n\n`;
+            let embedText = `To get the code for a specific error, do \`\`${commandPrefix}errors error-id\`\`\n\n`;
             for (const error of findErrorsForFirstArg) {
                 let errorFound = this.client.errors.get(error);
                 if (errorFound.hidden !== true) {

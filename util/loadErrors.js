@@ -5,7 +5,7 @@ module.exports = (client) => {
     client.errors = new Collection();
     client.errorTriggers = new Collection();
     client.errorIds = new Collection();
-    let errorLanguages = client.languages.get("error-languages");
+    let errorLanguages = client.languages.get("errors-languages");
     for (const language of errorLanguages) {
         const getErrors = (source) =>
             readdirSync(source, { withFileTypes: true })

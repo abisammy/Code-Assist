@@ -51,7 +51,7 @@ module.exports = class ExamplesCommand extends Commando.Command {
             channel.send(misingPermissiosEmbed);
             return;
         }
-        let exampleLanguages = this.client.languages.get("example-languages");
+        let exampleLanguages = this.client.languages.get("examples-languages");
         const firstArg = args[0];
 
         let commandPrefix = channel.type !== "dm" ? guild.commandPrefix : "";
@@ -85,7 +85,7 @@ module.exports = class ExamplesCommand extends Commando.Command {
                 .setAuthor(`Errors for ${firstArg}`)
                 .setColor("#7289DA");
 
-            let embedText = `To get the code for a specific example, do \`\`${commandPrefix}examples ${firstArg.toLowerCase()} example-id\`\`\n\n`;
+            let embedText = `To get the code for a specific example, do \`\`${commandPrefix}examples example-id\`\`\n\n`;
             for (const example of findExampleForFirstArg) {
                 let exampleFound = this.client.examples.get(example);
                 if (exampleFound.hidden !== true) {

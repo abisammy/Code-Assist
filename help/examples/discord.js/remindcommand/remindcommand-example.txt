@@ -1,0 +1,53 @@
+Use whatever command handler you want, I will just give an example of the code you need to put in your execute, (it could be called run, or callback or something similar).
+You can replace args with what you noremally use, it could be something like arguments
+If using discord.js-commando, make sure you add ``argsType: "multiple",`` on the top, where you call the things such as the name or description
+
+     **Make sure you run "npm i ms" to use this command**
+
+```js
+
+const ms = require('ms')
+const { channel } = message
+
+//we start by making 3 variables. one for the arguments, the message author and one for the reminder
+let time = args[0];
+let user = message.author
+//with the splice() method we return the removed items in an array. 
+//then right after that we join all the elements of the array into a string. 
+let reminder = args.splice(1).join(' ')
+
+//here we first check if an argument is provided. if not we will return an error message.
+if (!args[0]) return channel.send("Please specify the time!")
+//then we check if the argument provided is not one of the listed time formats we will also return an error message.
+if (
+    !args[0].endsWith("d") &&   
+    !args[0].endsWith("m") &&
+    !args[0].endsWith("h") &&
+    !args[0].endsWith("s")
+    )
+    return channel.send("Sorry I only do d, m, h, or s.")
+
+//if the user doesn't provide a reminer we will return an error message
+if (!reminder) return message.channel.send("Please tell me what you want to be reminded off")
+
+//if the user runs the command correctly we return a success message
+channel.send(`Your reminder will go off in ${time}`)
+    { SPLIT }
+//lastly we make a function that will send the reminder to the user.
+setTimeout(async function () {
+    //we put te command in a try catch function to make sure we don't get an error when the user has the bot blocked or dm turned off
+    try{
+    //then we send the user the dm. Make sure you use the await operator to run this command,
+
+
+    //this makes sure the message is only sent when every other step has been succesfully executed 
+    await user.send(`It has been ${time} here is your reminder: ${reminder}`)
+    }catch(err){
+        
+    }          
+}, ms(time));
+```
+
+
+If you have any common errors, try to trouble shoot them with the bot before asking someone for help
+*Written by Faint#6669*

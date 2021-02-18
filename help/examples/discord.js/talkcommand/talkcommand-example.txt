@@ -1,0 +1,27 @@
+Use whatever command handler you want, I will just give an example of the code you need to put in your execute, (it could be called run, or callback or something similar).
+You can replace args with what you noremally use, it could be something like arguments
+If using discord.js-commando, make sure you add ``argsType: "multiple",`` on the top, where you call the things such as the name or description
+
+```js
+// Destrucutre author and channel
+const { author, channel } = message
+
+// Define the tag and message
+let tag = author.tag
+let message = args.join(" ")
+
+// Make sure the message is under 2000 characters (discords limmit)
+if (message.length >= 2000){
+    return channel.send("That message is too long!")
+}
+
+// Send the message
+channel.send(`${tag}: ${message}`)
+```
+
+**Things to add**
+- Detect when a player uses @everyone or @here
+- A bad words filter
+
+If you have any common errors, try to trouble shoot them with the bot before asking someone for help
+*Written by abisammy#4749*
