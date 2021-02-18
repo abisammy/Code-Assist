@@ -15,6 +15,9 @@ module.exports = class BotInfoCommand extends Commando.Command {
     run = async (message, args) => {
         const { channel, guild } = message;
 
+        return channel.send(
+            "This command has been temporarily disabled due to an API error"
+        );
         if (
             channel.type === "text" &&
             !channel.permissionsFor(guild.me).has("EMBED_LINKS")
