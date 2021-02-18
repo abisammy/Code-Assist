@@ -1,0 +1,34 @@
+Format for errors:
+
+Create a folder for a new error, call it a abreviation for the error, such as await for await is only valid in a async function
+
+In that folder create two new files called errorname-error.js and errorname-fix.txt
+
+In errorname-error.js add:
+module.exports = {
+    name: "error",
+    triggers: ["Trigger one", "Trigger two"],
+    embedHeading: "Header for embed",
+    errorDisplayName: "Name of error"
+};
+
+In errorname-fix.txt just type your fix
+
+
+Format for examples:
+
+Create a folder for a new example, call it a abreviation for the example.
+
+In that folder create two new files called examplename-format.js and examplename-example.txt
+
+In examplename-format.js add:
+module.exports = {
+    name: "example",
+    difficulty: "EASY, MEDIUM, HARD",
+    embedHeading: "Header for embed",
+    exampleDisplayName: "Name of error"
+};
+
+In examplename-example.txt just type your fix
+
+

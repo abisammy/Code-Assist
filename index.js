@@ -14,4 +14,4 @@ const client = new Commando.CommandoClient({
     commandPrefix: "js!",
 });
 
-startup(client);
+await startup(client);
