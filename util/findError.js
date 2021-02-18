@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { MessageEmbed, Util } = require("discord.js");
+const { MessageEmbed, Util, Constants } = require("discord.js");
 module.exports = async (client, error, message) => {
     const { author, channel } = message;
     let findError = client.errors.get(error);
@@ -24,14 +24,23 @@ module.exports = async (client, error, message) => {
     if (channel.type !== "dm" && !rest.length) {
         await message.reply("Check your DM's!").then(async (r) => {
             await author.send(errorEmbed).catch((error) => {
-                r.edit("I couldn't DM you!");
-                return;
+                if (error.code === Constants.APIErrors.CANNOT_MESSAGE_USER) {
+                    r.edit("I couldn't DM you!");
+                    return;
+                } else {
+                    console.log(error);
+                }
             });
         });
         return;
     } else if (!rest.length) {
         await author.send(errorEmbed).catch((error) => {
-            return;
+            if (error.code === Constants.APIErrors.CANNOT_MESSAGE_USER) {
+                return;
+            } else {
+                console.log(error);
+                return;
+            }
         });
         return;
     } else {
@@ -47,13 +56,28 @@ module.exports = async (client, error, message) => {
             if (channel.type !== "dm") {
                 await message.reply("Check your DM's!").then(async (r) => {
                     await author.send(errorEmbed).catch((error) => {
-                        r.edit("I couldn't DM you!");
-                        return;
+                        if (
+                            error.code ===
+                            Constants.APIErrors.CANNOT_MESSAGE_USER
+                        ) {
+                            r.edit("I couldn't DM you!");
+                            return;
+                        } else {
+                            console.log(error);
+                            return;
+                        }
                     });
                 });
             } else {
                 await author.send(errorEmbed).catch((error) => {
-                    return;
+                    if (
+                        error.code === Constants.APIErrors.CANNOT_MESSAGE_USER
+                    ) {
+                        return;
+                    } else {
+                        console.log(error);
+                        return;
+                    }
                 });
             }
 
@@ -72,13 +96,28 @@ module.exports = async (client, error, message) => {
             if (channel.type !== "dm") {
                 await message.reply("Check your DM's!").then(async (r) => {
                     await author.send(errorEmbed).catch((error) => {
-                        r.edit("I couldn't DM you!");
-                        return;
+                        if (
+                            error.code ===
+                            Constants.APIErrors.CANNOT_MESSAGE_USER
+                        ) {
+                            r.edit("I couldn't DM you!");
+                            return;
+                        } else {
+                            console.log(error);
+                            return;
+                        }
                     });
                 });
             } else {
                 await author.send(errorEmbed).catch((error) => {
-                    return;
+                    if (
+                        error.code === Constants.APIErrors.CANNOT_MESSAGE_USER
+                    ) {
+                        return;
+                    } else {
+                        console.log(error);
+                        return;
+                    }
                 });
             }
 
@@ -88,7 +127,12 @@ module.exports = async (client, error, message) => {
             errorEmbed.setDescription(rest);
 
             author.send(errorEmbed).catch((error) => {
-                return;
+                if (error.code === Constants.APIErrors.CANNOT_MESSAGE_USER) {
+                    return;
+                } else {
+                    console.log(error);
+                    return;
+                }
             });
             return;
         }
