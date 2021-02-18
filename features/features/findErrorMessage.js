@@ -1,3 +1,5 @@
+const blacklistedUsers = require("@util/jsons/blacklistedUsers.json");
+const blacklistedGuilds = require("@util/jsons/blacklistedGuilds.json");
 const findError = require("@util/findError");
 let triggers = new Map();
 let triggersArray = [];
@@ -17,8 +19,29 @@ function loadTriggers(client) {
 module.exports = (client) => {
     client.on("message", (message) => {
         const { channel, guild, content: messageContent, author } = message;
-        loadTriggers(client);
 
+        if (
+            channel.type !== "dm" &&
+            !channel.permissionsFor(guild.me).has("VIEW_CHANNEL")
+        ) {
+            return;
+        }
+        if (
+            channel.type !== "dm" &&
+            !channel.permissionsFor(guild.me).has("SEND_MESSAGES")
+        ) {
+            return;
+        }
+
+        if (blacklistedUsers.hasOwnProperty(author.id)) {
+            return;
+        }
+        if (
+            channel.type !== "dm" &&
+            blacklistedGuilds.hasOwnProperty(guild.id)
+        ) {
+            return;
+        }
         if (channel.type !== "dm") {
             let prefix = guild.commandPrefix;
 
@@ -29,18 +52,19 @@ module.exports = (client) => {
             return;
         }
 
+        loadTriggers(client);
+
         let messageContentToLowerCase = messageContent
             .toLowerCase()
             .replace(/ /g, "");
 
-        if (triggersArray.includes(messageContentToLowerCase)) {
-            for (const trigger of triggersArray) {
-                if (messageContentToLowerCase.includes(trigger)) {
-                    let errorCode = triggers.get(trigger);
-                    findError(client, errorCode, message);
-                } else {
-                    continue;
-                }
+        for (const trigger of triggersArray) {
+            if (messageContentToLowerCase.includes(trigger)) {
+                let errorCode = triggers.get(trigger);
+                findError(client, errorCode, message);
+                break;
+            } else {
+                continue;
             }
         }
     });

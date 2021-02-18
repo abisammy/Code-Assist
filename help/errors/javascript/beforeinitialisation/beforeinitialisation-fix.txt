@@ -1,0 +1,19 @@
+Lets say you want to have an embed, here is an example
+```js
+console.log(int)
+let int = 5
+```
+
+What is the problem with that code you may ask, well I will show you
+```js
+console.log(int)
+// ^^^^^^^^^^^^^
+// Here you conole.log int
+
+let int = 5
+// ^^^^^^^^
+// But you define int after you log it
+```
+
+If you are stil having problems at this point ask someone to help you
+*Written by abisammy#4749*

@@ -1,36 +1,35 @@
 const fs = require("fs");
 const { MessageEmbed, Util } = require("discord.js");
-module.exports = async (client, error, message) => {
+module.exports = async (client, example, message) => {
     const { author, channel } = message;
-    let findError = client.errors.get(error);
+    let findExample = client.examples.get(example);
 
-    var data = fs.readFileSync(findError.errorFixPath, "utf-8");
+    var data = fs.readFileSync(findExample.exampleExamplePath, "utf-8");
     let convertToEmbedDescription = data.replace(/(\r\n|\n|\r)/gm, "\n");
 
     const [first, ...rest] = Util.splitMessage(convertToEmbedDescription, {
         maxLength: 2048,
     });
 
-    const errorEmbed = new MessageEmbed()
-
-        .setTitle(findError.embedHeading)
+    const exampleEmbed = new MessageEmbed()
+        .setAuthor(
+            `This example is a ${
+                findExample.language
+            } example, it has a ${findExample.difficulty.toLowerCase()} difficulty!`
+        )
+        .setTitle(findExample.embedHeading)
         .setColor("#7289DA")
         .setDescription(first);
-    if (findError.showLanguage !== false) {
-        await errorEmbed.setAuthor(
-            `This error is a ${findError.language} error!`
-        );
-    }
     if (channel.type !== "dm" && !rest.length) {
         await message.reply("Check your DM's!").then(async (r) => {
-            await author.send(errorEmbed).catch((error) => {
+            await author.send(exampleEmbed).catch((error) => {
                 r.edit("I couldn't DM you!");
                 return;
             });
         });
         return;
     } else if (!rest.length) {
-        await author.send(errorEmbed).catch((error) => {
+        await author.send(exampleEmbed).catch((error) => {
             return;
         });
         return;
@@ -42,52 +41,52 @@ module.exports = async (client, error, message) => {
 
             let removeChars = addSplit.slice(0, -textAfterSplit.length);
 
-            await errorEmbed.setDescription(removeChars);
+            await exampleEmbed.setDescription(removeChars);
 
             if (channel.type !== "dm") {
                 await message.reply("Check your DM's!").then(async (r) => {
-                    await author.send(errorEmbed).catch((error) => {
+                    await author.send(exampleEmbed).catch((error) => {
                         r.edit("I couldn't DM you!");
                         return;
                     });
                 });
             } else {
-                await author.send(errorEmbed).catch((error) => {
+                await author.send(exampleEmbed).catch((error) => {
                     return;
                 });
             }
 
-            await errorEmbed.setTitle(" ");
-            await errorEmbed.setAuthor(" ");
+            await exampleEmbed.setTitle(" ");
+            await exampleEmbed.setAuthor(" ");
 
-            await errorEmbed.setDescription(
+            await exampleEmbed.setDescription(
                 `\`\`\`js\n${textAfterSplit}\n${rest}`
             );
 
-            await author.send(errorEmbed).catch((error) => {
+            await author.send(exampleEmbed).catch((error) => {
                 return;
             });
             return;
         } else {
             if (channel.type !== "dm") {
                 await message.reply("Check your DM's!").then(async (r) => {
-                    await author.send(errorEmbed).catch((error) => {
+                    await author.send(exampleEmbed).catch((error) => {
                         r.edit("I couldn't DM you!");
                         return;
                     });
                 });
             } else {
-                await author.send(errorEmbed).catch((error) => {
+                await author.send(exampleEmbed).catch((error) => {
                     return;
                 });
             }
 
-            errorEmbed.setTitle(" ");
-            errorEmbed.setAuthor(" ");
+            exampleEmbed.setTitle(" ");
+            exampleEmbed.setAuthor(" ");
 
-            errorEmbed.setDescription(rest);
+            exampleEmbed.setDescription(rest);
 
-            author.send(errorEmbed).catch((error) => {
+            author.send(exampleEmbed).catch((error) => {
                 return;
             });
             return;

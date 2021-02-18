@@ -25,7 +25,7 @@ module.exports = (client) => {
             if (!error.embedHeading) {
                 throw `help/errors/${language}/${errorFolder}/${errorFolder}-error.js does not have a embedHeading!`;
             }
-            if (!error.errorDisplayName) {
+            if (!error.errorDisplayName && error.hidden !== true) {
                 throw `help/errors/${language}/${errorFolder}/${errorFolder}-error.js does not have an errorDisplayName!`;
             }
 
@@ -38,6 +38,7 @@ module.exports = (client) => {
                 errorId: "",
                 errorFixPath: "",
                 hidden: false,
+                showLanguage: false,
             };
 
             formatedError.language = language;
@@ -45,12 +46,16 @@ module.exports = (client) => {
             formatedError.triggers = error.triggers;
             formatedError.embedHeading = error.embedHeading;
             formatedError.errorDisplayName = error.errorDisplayName;
-            formatedError.errorId = error.errorDisplayName
-                .toLowerCase()
-                .replace(/ /g, "-")
-                .replace(/'/g, "");
+            if (error.hidden !== true) {
+                formatedError.errorId = error.errorDisplayName
+                    .toLowerCase()
+                    .replace(/ /g, "-")
+                    .replace(/'/g, "");
+            }
+
             formatedError.errorFixPath = `help/errors/${language}/${errorFolder}/${errorFolder}-fix.txt`;
             formatedError.hidden = error.hidden;
+            formatedError.showLanguage = error.showLanguage;
 
             client.errors.set(errorFolder, formatedError);
             client.errorIds.set(formatedError.errorId, formatedError.name);

@@ -1,0 +1,17 @@
+This error basically means, that the code cannot find the file path you have provided with fs.
+
+ One possible explanation for this could be that fs looks for files from the root of the directory, rather than relative paths like in regular javascript, here is an example:
+ ```js
+ const fs = require("fs)
+ let errorFiles = fs.readdirSync("./../help/errors", { withFileTypes: true })
+                .filter((dirent) => dirent.isDirectory())
+                .map((dirent) => dirent.name);
+conole.log(errorFiles)
+ ```
+ The problem is that fs is looking for the help folder from the root, so it would be help/errors instead of ./../help/errors
+
+ You may be wodering about this code and why I chose help and errors, the reason is this is how the bot is formated, and this bot is actually open source!
+ Check out the bot's [github](https://github.com/abisammy/DJS-assist)
+
+ If you are stil having problems at this point ask someone to help you
+*Written by abisammy#4749*

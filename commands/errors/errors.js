@@ -6,14 +6,48 @@ module.exports = class ErrorsCommand extends Commando.Command {
         super(client, {
             name: "errors",
             group: "errors",
+            aliases: ["error", "err", "errs"],
+            examples: ["errors", "error cannot-find-module-discord.js"],
             memberName: "errors",
-            description: "Shows all the errors",
+            description: "Shows the errors and a possible explanation for each",
             argsType: "multiple",
         });
     }
     run = (message, args) => {
         const findError = require("@util/findError");
         const { channel, guild } = message;
+        if (
+            channel.type !== "dm" &&
+            !channel.permissionsFor(guild.me).has("EMBED_LINKS")
+        ) {
+            channel.send(
+                `I need the embed links permission in this channel to execute this command!`
+            );
+            return;
+        }
+        if (
+            channel.type !== "dm" &&
+            !channel.permissionsFor(guild.me).has("VIEW_CHANNEL")
+        ) {
+            return;
+        }
+        if (
+            channel.type !== "dm" &&
+            !channel.permissionsFor(guild.me).has("SEND_MESSAGES")
+        ) {
+            const misingPermissiosEmbed = new MessageEmbed()
+                .setAuthor(
+                    `I am missing the send messages permission in this channel ❌`
+                )
+                .setColor("#FF0000")
+                .setDescription(
+                    `Please ask a server administrator to grant me it in this channel!`
+                );
+
+            channel.send(misingPermissiosEmbed);
+            return;
+        }
+
         let errorLanguages = this.client.languages.get("error-languages");
         const firstArg = args[0];
 
@@ -22,7 +56,7 @@ module.exports = class ErrorsCommand extends Commando.Command {
         if (!firstArg) {
             const errorLanguagesEmbed = new MessageEmbed()
                 .setAuthor("Languages that I support")
-                .setColor("BLUE");
+                .setColor("#7289DA");
 
             let embedText = `Do \`\`${commandPrefix}errors language\`\` to see errors for a specific language! \n\n`;
             for (const errorLanguage of errorLanguages) {
@@ -36,7 +70,7 @@ module.exports = class ErrorsCommand extends Commando.Command {
             let findErrorsForFirstArg = this.client.errorNames.get(firstArg);
             const embed = new MessageEmbed()
                 .setAuthor(`Errors for ${firstArg}`)
-                .setColor("BLUE");
+                .setColor("#7289DA");
 
             let embedText = `To get the code for a specific error, do \`\`${commandPrefix}errors ${firstArg.toLowerCase()} error-id\`\`\n\n`;
             for (const error of findErrorsForFirstArg) {

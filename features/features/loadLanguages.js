@@ -33,5 +33,8 @@ module.exports = (client) => {
 
         const loadErrors = require("@util/loadErrors");
         loadErrors(client);
+
+        const loadExamples = require("@util/loadExamples");
+        loadExamples(client);
     });
 };

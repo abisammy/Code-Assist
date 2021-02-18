@@ -32,6 +32,38 @@ module.exports = class HelpCommand extends Command {
     }
 
     async run(msg, args) {
+        const { channel, guild } = msg;
+        if (
+            channel.type !== "dm" &&
+            !channel.permissionsFor(guild.me).has("EMBED_LINKS")
+        ) {
+            channel.send(
+                `I need the embed links permission in this channel to execute this command!`
+            );
+            return;
+        }
+        if (
+            channel.type !== "dm" &&
+            !channel.permissionsFor(guild.me).has("VIEW_CHANNEL")
+        ) {
+            return;
+        }
+        if (
+            channel.type !== "dm" &&
+            !channel.permissionsFor(guild.me).has("SEND_MESSAGES")
+        ) {
+            const misingPermissiosEmbed = new MessageEmbed()
+                .setAuthor(
+                    `I am missing the send messages permission in this channel ❌`
+                )
+                .setColor("#FF0000")
+                .setDescription(
+                    `Please ask a server administrator to grant me it in this channel!`
+                );
+
+            channel.send(misingPermissiosEmbed);
+            return;
+        }
         // eslint-disable-line complexity
         const groups = this.client.registry.groups;
         const commands = this.client.registry.findCommands(
