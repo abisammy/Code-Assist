@@ -20,6 +20,7 @@ module.exports = async (client) => {
             ["basics", "These are the basics to help you get started"],
             ["errors", "Find your error here or diagnose it"],
             ["examples", "Some examples of code you can include!"],
+            ["dev only", "Commands locked to developers"],
         ])
         .registerCommandsIn(path.join(__dirname, "../commands"));
 
