@@ -13,5 +13,5 @@ conole.log(errorFiles)
  You may be wodering about this code and why I chose help and errors, the reason is this is how the bot is formated, and this bot is actually open source!
  Check out the bot's [github](https://github.com/abisammy/DJS-assist)
 
- If you are stil having problems at this point ask someone to help you
+ If you are still having problems at this point ask someone to help you
 *Written by abisammy#4749*

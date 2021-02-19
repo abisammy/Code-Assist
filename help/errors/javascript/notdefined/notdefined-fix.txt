@@ -1,0 +1,37 @@
+You probably have had a typo or forgot to define something, or you could have not passed in parameters correctly.
+Here is an example
+```js
+let number = 6
+console.log(nuber)
+```
+In that example number is mispelled in the console.log so it is going to throw an error
+
+another example could be:
+```js
+function consoleLog(text){
+    console.log(tet)
+}
+consoleLog("hi")
+```
+You pass in the parameter, but you do console.log(tet) instead of console.log(text)
+
+A whole other reason could be you just havent added it in, or maybe just commented it out by accident
+```js
+// let int = 6
+
+console.log(int)
+```
+
+```js
+function consoleLogWithEmoji(text){
+    console.log(text, emoji)
+}
+let text = "Hello"
+let emoji = "😊"
+
+consoleLogWithEmoji(text, emoji)
+```
+Here there would be an error, as you are passing in the text and the emoji, but you are not receivieng it in the function
+
+If you are still having problems at this point ask someone to help you
+*Written by abisammy#4749*
