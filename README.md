@@ -23,3 +23,9 @@ You are allowed to use my code, however please credit my original creators **abi
 3. Run the bot!
 
 **Please do not change the credit in the developers command, just leave it to credit the original developers**
+
+# Contributing to the bot!
+
+Right now, we are in desperate need to hire some writers to write articles or common errors for the bot, in different progranming languages.
+Apply here to become a writer in your language:
+https://forms.gle/j8n9oyx1w5StrjBUA

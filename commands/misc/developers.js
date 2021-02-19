@@ -15,7 +15,7 @@ module.exports = class DeveloperCommand extends Commando.Command {
     }
     run = async (message) => {
         // Destructure the channel from the message
-        const { channel } = message;
+        const { channel, guild } = message;
         if (
             channel.type !== "dm" &&
             !channel.permissionsFor(guild.me).has("EMBED_LINKS")
@@ -31,28 +31,13 @@ module.exports = class DeveloperCommand extends Commando.Command {
         ) {
             return;
         }
-        if (
-            channel.type !== "dm" &&
-            !channel.permissionsFor(guild.me).has("SEND_MESSAGES")
-        ) {
-            const misingPermissiosEmbed = new MessageEmbed()
-                .setAuthor(
-                    `I am missing the send messages permission in this channel ❌`
-                )
-                .setColor("#FF0000")
-                .setDescription(
-                    `Please ask a server administrator to grant me it in this channel!`
-                );
 
-            channel.send(misingPermissiosEmbed);
-            return;
-        }
         // Create the embed and send it
         const devsEmbed = new MessageEmbed()
             .setAuthor(`Here are my developers:`)
             .setColor("#7289DA")
             .setDescription(
-                `**abisammy#4749**\n\n**Faint#6669**\n\n\nThis bot is open source for you to use, check out the [github](https://github.com/abisammy/DJS-assist)`
+                `**abisammy#4749**\n\n**Faint#6669**\n\n\nThis bot is open source for you to use, check out the [github](https://github.com/abisammy/DJS-assist)\n\n**Links**\n[github](https://github.com/abisammy/DJS-assist) **|** [apply to become a writer](https://forms.gle/fYWkeRuEX16zX8SHA) **|** [support server](https://discord.gg/QJcJ3McTQC)`
             );
 
         channel.send(devsEmbed);
