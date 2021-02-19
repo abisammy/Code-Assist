@@ -37,5 +37,5 @@ async execute(message){
 }
 ```
 
-If you are stil having problems at this point ask someone to help you
+If you are still having problems at this point ask someone to help you
 *Written by abisammy#4749*

@@ -1,6 +1,6 @@
 {
   "name": "js-assist",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "A very handy bot to help yo get started with javascript!",
   "main": "index.js",
   "scripts": {

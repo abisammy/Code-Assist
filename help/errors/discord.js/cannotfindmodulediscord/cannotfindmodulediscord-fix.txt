@@ -4,5 +4,5 @@ Simply run ``npm i discord.js`` in the project terminal
 🤯🤯🤯🤯
 Problem solved (*hopefully*)
 
-If you are stil having problems at this point ask someone to help you
+If you are still having problems at this point ask someone to help you
 *Written by abisammy#4749*
