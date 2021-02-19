@@ -12,7 +12,7 @@ const Commando = require("discord.js-commando");
 const client = new Commando.CommandoClient({
     owner: "468128787884670986",
     coowner: "203234887484833792",
-    commandPrefix: "js!",
+    commandPrefix: "ca!",
 });
 
 startup(client);

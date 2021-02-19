@@ -16,7 +16,7 @@ module.exports = class YoutubeCommand extends Commando.Command {
     }
     run = async (message) => {
         // Destructure the channel from the message
-        const { channel } = message;
+        const { channel, guild } = message;
 
         if (
             channel.type !== "dm" &&

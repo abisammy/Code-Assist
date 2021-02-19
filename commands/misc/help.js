@@ -104,7 +104,7 @@ module.exports = class HelpCommand extends Command {
                     .setColor("#7289DA")
                     .addField(
                         `Links`,
-                        `[github](https://github.com/abisammy/DJS-assist)`
+                        `[github](https://github.com/abisammy/DJS-assist) **|** [apply to become a writer](https://forms.gle/fYWkeRuEX16zX8SHA) **|** [support server](https://discord.gg/QJcJ3McTQC)`
                     );
                 msg.channel.send(explainEmbed);
             }
@@ -251,7 +251,7 @@ module.exports = class HelpCommand extends Command {
                 { split: true };
             helpEmbed.addField(
                 `Links`,
-                `[github](https://github.com/abisammy/DJS-assist)`
+                `[github](https://github.com/abisammy/DJS-assist) **|** [apply to become a writer](https://forms.gle/fYWkeRuEX16zX8SHA) **|** [support server](https://discord.gg/QJcJ3McTQC)`
             );
             msg.channel.send(helpEmbed);
         }
