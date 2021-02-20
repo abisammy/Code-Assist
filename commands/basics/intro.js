@@ -47,10 +47,6 @@ module.exports = class IntroCommand extends Commando.Command {
             .addField(
                 `${commandPrefix}errors`,
                 `This gives you all the errors that you might encounter that the bot has a solution to`
-            )
-            .addField(
-                `${commandPrefix}youtube`,
-                `This command has a few youtube series I recommend you check out for learning discord.js`
             );
 
         channel.send(introEmbed);
