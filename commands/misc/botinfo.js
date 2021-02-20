@@ -1,8 +1,14 @@
-const Commando = require("discord.js-commando");
+// require commando for the command
+const { Command } = require("discord.js-commando");
+
+// Require the bots version
 const { version } = require("@root/package.json");
+
+// require messageEmbed from discord.js
 const { MessageEmbed } = require("discord.js");
 
-module.exports = class BotInfoCommand extends Commando.Command {
+// Create the command
+module.exports = class BotInfoCommand extends Command {
     constructor(client) {
         super(client, {
             name: "botinfo",
@@ -12,12 +18,15 @@ module.exports = class BotInfoCommand extends Commando.Command {
             description: "Shows information about the bot!",
         });
     }
-    run = async (message, args) => {
+    run = async (message) => {
+        // destrucutre the channel and the guild from the message
         const { channel, guild } = message;
 
         return channel.send(
             "This command has been temporarily disabled due to an API error"
         );
+
+        // Make sure wehave permissions to run the command
         if (
             channel.type === "text" &&
             !channel.permissionsFor(guild.me).has("EMBED_LINKS")
@@ -29,13 +38,17 @@ module.exports = class BotInfoCommand extends Commando.Command {
             return;
         }
 
+        // get the total messages the bot is in
         let totalMembers = 0;
 
         for (const guild of this.client.guilds.cache) {
             totalMembers += (await guild[1].members.fetch()).size;
         }
 
+        // Get the uptime the bot has been on for
         let time = process.uptime();
+
+        // this is a function, probably not coded well to convert milliseconds into seconds, mintues and hours
         function format(time) {
             // Hours, minutes and seconds
             var hrs = ~~(time / 3600);
@@ -89,10 +102,12 @@ module.exports = class BotInfoCommand extends Commando.Command {
             return ret;
         }
 
+        // Get the command prefix
         let commandPrefix = guild
             ? guild.commandPrefix
             : "This is not a server!";
 
+        // Create an embed
         const embed = new MessageEmbed()
             .setAuthor(
                 `Information about the ${this.client.user.username} Bot`,
@@ -125,6 +140,8 @@ module.exports = class BotInfoCommand extends Commando.Command {
                     value: totalMembers,
                 }
             );
-        message.channel.send(embed);
+
+        // send the embed
+        channel.send(embed);
     };
 };

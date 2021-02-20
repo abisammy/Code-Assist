@@ -165,29 +165,45 @@ module.exports = async (client, example, message) => {
             // And finally return
             return;
 
-            // However if the example
+            // However if the example does not include { SPLIT }
         } else {
+            // If the original message was not sent in a DM then
             if (channel.type !== "dm") {
+                // Reply to check the users DM's
                 await message.reply("Check your DM's!").then(async (r) => {
+                    // Send the user the embed
                     await author.send(exampleEmbed).catch((error) => {
+                        // If we couldnt send the user to check their DM's
+
+                        // If the error code was because we cant message the user inform the user and return
                         if (
                             error.code ===
                             Constants.APIErrors.CANNOT_MESSAGE_USER
                         ) {
                             r.edit("I couldn't DM you!");
                             return;
+
+                            // However if it was a different error console.log the error and return
                         } else {
                             console.log(error);
                             return;
                         }
                     });
                 });
+
+                // However if the original message was sent in DM's then
             } else {
+                // Send the user the DM
                 await author.send(exampleEmbed).catch((error) => {
+                    // If we couldnt DM the user then
+
+                    // If the error code was becasue we cant DM the user then return
                     if (
                         error.code === Constants.APIErrors.CANNOT_MESSAGE_USER
                     ) {
                         return;
+
+                        // However if it was a different error console.log the error and return
                     } else {
                         console.log(error);
                         return;
@@ -195,19 +211,29 @@ module.exports = async (client, example, message) => {
                 });
             }
 
+            // Remove the title and author for the second embed
             await exampleEmbed.setTitle(" ");
             await exampleEmbed.setAuthor(" ");
 
+            // Change the second embeds description to the rest of the text
             await exampleEmbed.setDescription(rest);
 
+            // send the user the second embed
             await author.send(exampleEmbed).catch((error) => {
+                // If we couldnt DM the user then
+
+                // If the error was because we cant dm the user then return
                 if (error.code === Constants.APIErrors.CANNOT_MESSAGE_USER) {
                     return;
+
+                    // However if it was a different error then console.log the error and return
                 } else {
                     console.log(error);
                     return;
                 }
             });
+
+            // And finally return
             return;
         }
     }

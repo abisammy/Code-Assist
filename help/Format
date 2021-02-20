@@ -6,10 +6,11 @@ In that folder create two new files called errorname-error.js and errorname-fix.
 
 In errorname-error.js add:
 module.exports = {
-    name: "error",
     triggers: ["Trigger one", "Trigger two"],
     embedHeading: "Header for embed",
-    errorDisplayName: "Name of error"
+    errorDisplayName: "Name of error",
+    hidden: true or false (if you want the error to show up on the errors command),
+    showLanguage: true or false (if you want the embed to have "this is a javascript error" for example on top of it )
 };
 
 In errorname-fix.txt just type your fix
@@ -23,7 +24,6 @@ In that folder create two new files called examplename-format.js and examplename
 
 In examplename-format.js add:
 module.exports = {
-    name: "example",
     difficulty: "EASY, MEDIUM, HARD",
     embedHeading: "Header for embed",
     exampleDisplayName: "Name of error"

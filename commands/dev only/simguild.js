@@ -1,6 +1,8 @@
-const Commando = require("discord.js-commando");
+// require commando for the command
+const { Command } = require("discord.js-commando");
 
-module.exports = class SimGuildCommand extends Commando.Command {
+// Create a commando command
+module.exports = class SimGuildCommand extends Command {
     constructor(client) {
         super(client, {
             name: "simguild",
@@ -12,6 +14,8 @@ module.exports = class SimGuildCommand extends Commando.Command {
     }
     run = async (message) => {
         const { guild } = message;
+
+        // simulate the bot being added to a server
         this.client.emit("guildCreate", guild);
     };
 };

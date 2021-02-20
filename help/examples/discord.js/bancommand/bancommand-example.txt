@@ -25,6 +25,7 @@ if (!member.bannable) return channel.send("This user can't be banned."))
 //if there is no reason provided reason is no reason.
 let wReason = args.slice(1).join(" "); if (!wReason) wReason = 'No Reason';
 
+
 try{
 await member.send(`\**You have been banned from ${message.guild.name}. Reason:** ${wReason}`)
 }catch(err){

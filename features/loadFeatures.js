@@ -18,7 +18,7 @@ module.exports = (client) => {
             const stat = fs.lstatSync(path.join(__dirname, dir, file));
             if (stat.isDirectory()) {
                 readFeatures(path.join(dir, file));
-            } else if (file !== "load-features.js") {
+            } else if (file !== "loadFeatures.js") {
                 const feature = require(path.join(__dirname, dir, file));
                 consoleLogColor("Cyan", `Enabling feature "${file}"`);
                 feature(client);

@@ -1,9 +1,9 @@
 // Get message embed and discord.js commando for the command
-const Commando = require("discord.js-commando");
+const { Command } = require("discord.js-commando");
 const { MessageEmbed } = require("discord.js");
 
 // Create the command
-module.exports = class DeveloperCommand extends Commando.Command {
+module.exports = class DeveloperCommand extends Command {
     constructor(client) {
         super(client, {
             name: "developers",
@@ -16,6 +16,8 @@ module.exports = class DeveloperCommand extends Commando.Command {
     run = async (message) => {
         // Destructure the channel from the message
         const { channel, guild } = message;
+
+        // Make sure we have the embed links permission in the channel
         if (
             channel.type !== "dm" &&
             !channel.permissionsFor(guild.me).has("EMBED_LINKS")
@@ -23,12 +25,6 @@ module.exports = class DeveloperCommand extends Commando.Command {
             channel.send(
                 `I need the embed links permission in this channel to execute this command!`
             );
-            return;
-        }
-        if (
-            channel.type !== "dm" &&
-            !channel.permissionsFor(guild.me).has("VIEW_CHANNEL")
-        ) {
             return;
         }
 

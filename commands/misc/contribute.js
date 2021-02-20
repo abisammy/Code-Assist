@@ -1,6 +1,9 @@
-const Commando = require("discord.js-commando");
+// Get MessageEmbed and Commando for the command
+const { Command } = require("discord.js-commando");
 const { MessageEmbed } = require("discord.js");
-module.exports = class ContributeCommand extends Commando.Command {
+
+// Create the command
+module.exports = class ContributeCommand extends Command {
     constructor(client) {
         super(client, {
             name: "contribute",
@@ -10,7 +13,10 @@ module.exports = class ContributeCommand extends Commando.Command {
         });
     }
     run = async (message, args) => {
+        // destrucuture the channel and the guild from the command
         const { channel, guild } = message;
+
+        // make sure we have the embed links permission in the channel
         if (
             channel.type !== "dm" &&
             !channel.permissionsFor(guild.me).has("EMBED_LINKS")
@@ -20,13 +26,8 @@ module.exports = class ContributeCommand extends Commando.Command {
             );
             return;
         }
-        if (
-            channel.type !== "dm" &&
-            !channel.permissionsFor(guild.me).has("VIEW_CHANNEL")
-        ) {
-            return;
-        }
 
+        // Create an embed and send it
         const contirbuteEmbed = new MessageEmbed()
             .setAuthor(`Use this for to contribute to the bot`)
             .setColor("#7289DA")
