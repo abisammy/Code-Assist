@@ -1,5 +1,4 @@
 module.exports = {
-    name: "nosuchfileordir",
     triggers: [
         "UnhandledPromiseRejectionWarning: Error: ENOENT: no such file or directory",
     ],

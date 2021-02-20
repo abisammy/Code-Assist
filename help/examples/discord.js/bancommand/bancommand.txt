@@ -1,0 +1,38 @@
+Use whatever command handler you want, I will just give an example of the code you need to put in your execute, (it could be called run, or callback or something similar).
+
+
+  const { channel } = message
+
+//start by checking if the user has permissions to ban members. If not return error
+if (!message.member.hasPermission("BAN_MEMBERS")) return message.channel.send('you don't have the permissions to ban members'));
+//check if the bot has permissiosn to ban members. If not return error
+if (!message.guild.me.hasPermission("BAN_MEMBERS")) return message.channel.send("I am missing the permission: Ban Members"));
+
+//check for mentions member and get the cache of all guild members 
+const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
+
+//If there is no first argument or if there is no member mentioned return error
+if (!args[0] || !member) return channel.send("Please mention the person you want to ban")
+
+//if the person your are trying to ban is equal to the author (admin who's trying to ban) return error
+if (member.id === message.author.id) return channel.send("You can't ban yourself!"))
+
+//if the person you are trying to ban has a higher role then the bot 
+if (!member.bannable) return channel.send("This user can't be banned.")) 
+
+let wReason = args.slice(1).join(" "); if (!wReason) wReason = 'No Reason';
+
+try{
+await member.send(`\**You have been banned from ${message.guild.name}. Reason:** ${wReason}`)
+}catch(err){
+
+}
+        
+member.ban(reason: `\**Banned by ${message.author.id} Reason:** ${wReason}`)
+channel.send( `Succesfully banned ${member.user.tag}. Reason:** ${wReason}`);
+
+
+
+
+If you have any common errors, try to trouble shoot them with the bot before asking someone for help
+*Written by Faint#6669*

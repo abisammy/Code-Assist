@@ -1,9 +1,9 @@
 // require discord.js commando and message embed for the command
-const Commando = require("discord.js-commando");
+const { Command } = require("discord.js-commando");
 const { MessageEmbed } = require("discord.js");
 
 // Create the command
-module.exports = class IntroCommand extends Commando.Command {
+module.exports = class IntroCommand extends Command {
     constructor(client) {
         super(client, {
             name: "intro",
@@ -19,6 +19,7 @@ module.exports = class IntroCommand extends Commando.Command {
         // Create the command prefix whether the command was ran in a DM or in a servr
         let commandPrefix = channel.type !== "dm" ? guild.commandPrefix : "";
 
+        // Make sure we have the embed links permission in the channel
         if (
             channel.type !== "dm" &&
             !channel.permissionsFor(guild.me).has("EMBED_LINKS")
@@ -47,10 +48,6 @@ module.exports = class IntroCommand extends Commando.Command {
             .addField(
                 `${commandPrefix}errors`,
                 `This gives you all the errors that you might encounter that the bot has a solution to`
-            )
-            .addField(
-                `${commandPrefix}youtube`,
-                `This command has a few youtube series I recommend you check out for learning discord.js`
             );
 
         channel.send(introEmbed);

@@ -9,10 +9,10 @@ module.exports = (client) => {
     const TOKEN = process.env.TOKEN;
 
     // Find the load-commands.js file
-    const loadCommands = require("@util/load-commands");
+    const loadCommands = require("@util/loadCommands");
 
     // Find the load-features.js file
-    const loadFeatures = require("@root/features/load-features");
+    const loadFeatures = require("@root/features/loadFeatures");
 
     // set the provider, and connect to mongo
     client.setProvider(
